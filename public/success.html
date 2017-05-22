@@ -1,0 +1,45 @@
+<!-- success page -->
+
+<html>
+    <head>
+
+      <!-- JQuery Library -->
+      <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+      <script src="js/jquery-3.2.1.min.js"></script>
+
+      <!-- Bootstrap-->
+      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+
+      <!-- Custom CSS Style -->
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+
+
+      <script>
+        // Helper function to parse URL
+        function GetURLParameter(sParam)
+        {
+            var sPageURL = window.location.search.substring(1);
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++)
+            {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam)
+                {
+                    return sParameterName[1];
+                }
+            }
+        }
+
+        var user_continue_url = decodeURIComponent(GetURLParameter("user_continue_url"));
+        var name = decodeURIComponent("name");
+      </script>
+    </head>
+    <body>
+      <div class="container">
+        <div class="jumbotron">
+          <h1>Success</h1>
+        </div>
+      </div>
+    </body>
+</html>

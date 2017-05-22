@@ -1,0 +1,205 @@
+<!--
+This sample web application provides a simple Click-Through Splash page for Cisco Meraki networks.
+Usage:
+* Configure your Cisco Meraki wireless network with a Click-through splash page.
+* Configure the "Custom URL" to point to your webserver that is hosting this HTML file.
+* Update the "Walled Garden" with the IP or Domain Name for your webserver and any supporting resources
+* Add any additional logic to forward the form data to your preferred service. By default, a simple alert
+displays the results of one form entry and then prints the Meraki provided parameters in the the footer.
+
+This is example was written by:
+Cory Guynn
+www.InternetOfLEGO.com
+2016
+
+LICENSE: MIT
+"Have Fun!, use and abuse"
+-->
+
+<html>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- JQuery Library -->
+      <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+      <script src="js/jquery-3.2.1.min.js"></script>
+
+      <!-- Website Font style -->
+	    <link rel="stylesheet" href="css/font-awesome.min.css">
+
+      <!-- Bootstrap-->
+      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+
+      <!-- Custom CSS Style -->
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+
+      <title>WiFi Login</title>
+    </head>
+    <div class="container">
+
+
+
+    <div class="row main cols-md-2">
+      <div class="panel-heading">
+         <div class="panel-title text-center">
+          <h2 class="title">Meraki WiFi Login</h2>
+          <hr />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <p>Please complete this form to login</p>
+        </div>
+
+      </div>
+      <div class="main-login main-center">
+
+        <form class="form-horizontal" method="post" action="#">
+
+          <div class="form-group">
+            <label for="name" class="cols-sm-2 control-label">Your Name</label>
+            <div class="cols-sm-10">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                <input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="cols-sm-2 control-label">Your Email</label>
+            <div class="cols-sm-10">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                <input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="username" class="cols-sm-2 control-label">Your Company</label>
+            <div class="cols-sm-10">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                <input type="text" class="form-control" name="company" id="company"  placeholder="Enter your company"/>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <div class="checkbox">
+                <label><input type="checkbox" required=true><a href="/terms">Agree to T&S<a></label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button class="btn btn-primary" type="submit" id="loginButton" name="loginButton">Login</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <p class="copyright">Sample by <a href="http://www.InternetOfLEGO.com" target="_blank" title="Internet of LEGO">Internet of LEGO</a></p>
+  </div>
+</div>
+
+
+    <hr>
+    <div class="card-header">
+      Demo Stats, remove these for production
+    </div>
+    <div class="card">
+      <p><label>Base Grant Url: </label><label id="baseGrantURL"></label></p>
+      <p><label>User Continue URL: </label><label id="userContinueURL"></label></p>
+      <p><label>Client IP: </label><label id="clientIP"></label></p>
+      <p><label>Client MAC: </label><label id="clientMAC"></label></p>
+      <p><label>Access Point MAC: </label><label id="nodeMAC"></label></p>
+      <p><label>Login Results: </label><label id="result"></label></p>
+    </div>
+
+    <!-- Latest compiled and minified Bootrstrap JavaScript -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <script>
+        // Parse Meraki supplied paramaters
+        var base_grant_url = decodeURIComponent(GetURLParameter("base_grant_url"));
+        var user_continue_url = decodeURIComponent(GetURLParameter("user_continue_url"));
+        var node_mac = GetURLParameter("node_mac");
+        var client_ip = GetURLParameter("client_ip");
+        var client_mac = GetURLParameter("client_mac");
+
+        // Custom success page
+        var success_url = "/success";
+
+        // Print Meraki provided paramaters
+        console.log("user_continue_url: "+user_continue_url);
+        console.log("client_ip: "+client_ip);
+        document.getElementById("baseGrantURL").innerHTML = base_grant_url;
+        document.getElementById("userContinueURL").innerHTML = user_continue_url;
+        document.getElementById("clientIP").innerHTML = client_ip;
+        document.getElementById("clientMAC").innerHTML = client_mac;
+        document.getElementById("nodeMAC").innerHTML = node_mac;
+
+        // Handle Form Submission
+        $('form').submit(function(event) {
+          console.log("processing loginForm");
+
+          // Store form data into variable
+          formData = {
+            "name":$("input#name").val(),
+            "email":$("input#email").val(),
+            "company":$("input#company").val()
+          }
+
+          // Do something with data -- This could be a database commit instead
+          // Posting it to server
+          console.log("posting form data", formData);
+
+          $.post("/form", formData,
+            function(data, status){
+                console.log("Form data submitted");
+                //alert("Thank you: " + data + "\nStatus: " + status + "url: "+base_grant_url);
+                var url;
+                if (!base_grant_url){
+                  loginUrl = "/fail";
+                }else {
+                  loginUrl = base_grant_url + "?continue_url="+user_continue_url;
+                  //loginUrl = base_grant_url + "?user_continue_url=/success"+user_continue_url;
+                }
+
+                // ** Login to Meraki by redirecting client to the base_grant_url **
+                console.log("Redirecting to base_grant_url: ",loginUrl);
+                window.location.href = loginUrl;
+            });
+
+
+            // first check if the base grant URL exists. If not, the user is likely not connected to a Meraki AP for WiFi.
+
+            //var loginUrl = base_grant_url + "?continue_url="+"/success";
+            event.preventDefault();
+
+          });
+
+        // Helper function to parse URL
+        function GetURLParameter(sParam)
+        {
+            var sPageURL = window.location.search.substring(1);
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++)
+            {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam)
+                {
+                    return sParameterName[1];
+                }
+            }
+        }
+
+    </script>
+</html>

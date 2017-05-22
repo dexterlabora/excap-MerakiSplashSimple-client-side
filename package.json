@@ -1,0 +1,25 @@
+{
+  "name": "merakisplash",
+  "version": "1.0.0",
+  "description": "Meraki Captive Portal Click Through Demo - Simple",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "Cisco",
+    "Meraki",
+    "ExCap",
+    "Captive",
+    "Portal",
+    "WiFi",
+    "Hotspot"
+  ],
+  "author": "Cory Guynn",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3"
+  }
+}
