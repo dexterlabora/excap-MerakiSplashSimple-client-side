@@ -32,17 +32,28 @@ An action for handling the form will need to be adjusted to commit to a database
 * Add the domain address of the webserver to the "Walled Garden" 
     * Dashboard --> Configure --> Access Control --> SSID:yourSSID --> *Walled Garden*.
     * Note: You will need to use the IP address instead of the domain name or contact Meraki Support to enable Walled Garden Host Names
+    * Any external resources, such as Javascript or CSS libraries like Bootstrap, or websites should be added into the walled garden for your site to work properly. 
 
 
 
-## Sample URL paramater string
+
+
+## How does it work?
+A Meraki Click-through splash page works be intercepting a client when it attempts to open a non-encrypted website (HTTP). The AP will then redirect the client to the splash page URL, along with a set of paramaters.
+
+*Sample URL paramater string*
 ```
-https://yourserver/splash.html?base_grant_url=https%3A%2F%2Fn143.network-auth.com%2Fsplash%2Fgrant&user_continue_url=http%3A%2F%2Fask.com%2F&node_id=149624921787028&node_mac=88:15:44:50:0a:94&gateway_id=149624921787028&client_ip=10.110.154.195&client_mac=60:e3:ac:f7:48:08:22
+http://yourserver:5000/splash.html?base_grant_url=https%3A%2F%2Fn143.network-auth.com%2Fsplash%2Fgrant&user_continue_url=http%3A%2F%2Fask.com%2F&node_id=149624921787028&node_mac=88:15:44:50:0a:94&gateway_id=149624921787028&client_ip=10.110.154.195&client_mac=60:e3:ac:f7:48:08:22
 ```
+
+The most important parameter is the `base_grant_url` which contains a specific URL the client must be directed to, which grants access to the network. This is not meant to be a high security interaction. Instead it is used as an intermediate step to collect some data, present a terms of service and present any branding required.
 
 ## Screenshot
 ![alt screenshot](screenshot.png)
 
+## Advanced Version
+For a more secure method that supports both click-through and sign-on splash pages, check out this article along with source code. A NodeJS server will process all of the login and provide more flexibility with managing the session data in a secure and scalable way.
+http://www.internetoflego.com/wifi-hotspot-cisco-meraki-excap-nodejs/
 
 ## Additional Resources
 http://developers.meraki.com/tagged/Splash-Pages
